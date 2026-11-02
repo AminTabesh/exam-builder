@@ -1,0 +1,304 @@
+@font-face {
+  font-family: Vazirmatn;
+  src: url("/fonts/vazirmatn-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  unicode-range: U+0000-00FF;
+  font-display: swap;
+}
+@font-face {
+  font-family: Vazirmatn;
+  src: url("/fonts/vazirmatn-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  unicode-range: U+0000-00FF;
+  font-display: swap;
+}
+@font-face {
+  font-family: Vazirmatn;
+  src: url("/fonts/vazirmatn-arabic-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: Vazirmatn;
+  src: url("/fonts/vazirmatn-arabic-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+.print-document {
+  color: #111;
+  font-family: Vazirmatn, Arial, sans-serif;
+  font-size: var(--exam-font, 12pt);
+  line-height: 1.9;
+  text-align: start;
+}
+.print-document * {
+  box-sizing: border-box;
+}
+.print-source {
+  position: absolute;
+  left: -20000px;
+  width: 186mm;
+  visibility: hidden;
+}
+.exam-page {
+  width: 210mm;
+  height: 297mm;
+  padding: 12mm;
+  background: white;
+  position: relative;
+  box-sizing: border-box;
+  break-after: page;
+  overflow: visible;
+}
+.exam-page:last-child {
+  break-after: auto;
+}
+.page-body {
+  height: 263mm;
+  overflow: visible;
+}
+.page-footer {
+  height: 10mm;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  font-size: 9pt;
+  border-top: 1px solid #555;
+}
+.exam-header {
+  border: 1.5px solid #222;
+  margin-bottom: 5mm;
+  font-size: 10pt;
+}
+.opening {
+  text-align: center;
+  font-size: 9pt;
+  padding: 2mm;
+}
+.header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2mm 4mm;
+}
+.header-title p {
+  margin: 0;
+}
+.header-title h1 {
+  font-size: 16pt;
+  margin: 1mm 0;
+  font-weight: 700;
+}
+.exam-logo {
+  width: 16mm;
+  height: 16mm;
+  object-fit: contain;
+  margin-inline-end: 4mm;
+}
+.header-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1mm 3mm;
+  border-top: 1px solid #333;
+  padding: 3mm;
+}
+.student-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2mm 6mm;
+  padding: 3mm;
+  border-top: 1px solid #333;
+}
+.exam-instructions {
+  border-top: 1px solid #333;
+  padding: 3mm;
+  margin: 0 !important;
+  white-space: pre-wrap;
+}
+.print-question {
+  border: 1px solid #888;
+  padding: 3mm 4mm;
+  margin-bottom: 3mm;
+  overflow-wrap: anywhere;
+}
+.question-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9pt;
+  margin-bottom: 1mm;
+}
+.print-document p {
+  margin: 1mm 0 2mm;
+  white-space: pre-wrap;
+}
+.print-document img {
+  max-width: 100%;
+  max-height: 210mm;
+  object-fit: contain;
+  display: block;
+}
+.print-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2mm;
+  margin: 2mm 0;
+}
+.response-line,
+.response-space {
+  height: 8mm;
+}
+.response-line {
+  border-bottom: 1px dotted #aaa;
+}
+.inline-blank {
+  display: inline-block;
+  border-bottom: 1px dotted #111;
+  height: 1em;
+  vertical-align: baseline;
+  max-width: 100%;
+}
+.formula {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  padding: 0 2px;
+}
+.print-section {
+  font-weight: 700;
+  border-bottom: 1.5px solid;
+  padding: 2mm;
+  margin-bottom: 3mm;
+}
+.exam-closing {
+  text-align: center;
+  padding: 4mm;
+  white-space: pre-wrap;
+}
+.continuation-header {
+  font-size: 9pt;
+  border-bottom: 1px solid #555;
+  margin-bottom: 4mm;
+  padding-bottom: 2mm;
+}
+.model-answer {
+  padding: 3mm;
+  border-top: 1px dashed #555;
+}
+.answer-label {
+  font-size: 12pt;
+}
+.print-document ul,
+.print-document ol {
+  padding-inline-start: 6mm;
+}
+.print-document .katex {
+  font-size: 1.05em;
+}
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white;
+  }
+  .print-source {
+    display: none;
+  }
+  .exam-page {
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+  .print-document {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+/* Formal sheet: connected rows with fixed number and marks columns. */
+.exam-page::before {
+  content: "";
+  position: absolute;
+  inset: 9mm;
+  border: 3px double #111;
+  pointer-events: none;
+}
+.exam-header {
+  margin-bottom: 0;
+  border: 1px solid #111;
+}
+.header-grid,
+.student-fields {
+  padding: 2mm 3mm;
+}
+.table-heading {
+  display: grid;
+  grid-template-columns: 10mm minmax(0, 1fr) 12mm;
+  border: 1px solid #111;
+  border-top: 0;
+  font-size: 9pt;
+  text-align: center;
+}
+.table-heading span {
+  padding: 1mm;
+}
+.table-heading span + span {
+  border-inline-start: 1px solid #111;
+}
+.print-question {
+  position: relative;
+  border: 1px solid #111;
+  border-top: 0;
+  margin: 0;
+  padding-block: 2mm;
+  padding-inline: 12mm 14mm;
+  min-height: 10mm;
+}
+.print-question::before,
+.print-question::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-inline-start: 1px solid #111;
+}
+.print-question::before {
+  inset-inline-start: 10mm;
+}
+.print-question::after {
+  inset-inline-end: 12mm;
+}
+.question-top {
+  margin: 0;
+  font-size: 9pt;
+}
+.question-top b {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 2mm;
+  width: 10mm;
+  text-align: center;
+  font-size: 8pt;
+  overflow-wrap: anywhere;
+}
+.question-top span {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 2mm;
+  width: 12mm;
+  text-align: center;
+}
+.print-section {
+  border: 1px solid #111;
+  border-top: 0;
+  margin: 0;
+  padding: 2mm 3mm;
+}
+.continuation-header {
+  margin: 0;
+  padding: 1mm 2mm;
+  border: 1px solid #111;
+}

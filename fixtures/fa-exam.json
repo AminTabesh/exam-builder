@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "title": "آزمون میان‌ترم ریاضی",
+    "course": "ریاضی",
+    "institution": "دبیرستان دانش",
+    "instructor": "مریم احمدی",
+    "date": "",
+    "calendar": "jalali",
+    "startTime": "",
+    "duration": "60",
+    "year": "۱۴۰۵–۱۴۰۶",
+    "grade": "پایه دهم",
+    "field": "",
+    "faculty": "",
+    "department": "",
+    "courseCode": "",
+    "semester": "",
+    "opening": "به نام خدا",
+    "instructions": "پاسخ‌ها را خوانا و با خودکار آبی یا مشکی بنویسید.",
+    "closing": "موفق باشید.",
+    "logo": "",
+    "awardedScore": false
+  },
+  "layout": {
+    "language": "fa",
+    "template": "school",
+    "fontSize": 12,
+    "target": "20"
+  },
+  "questions": [
+    {
+      "id": "ec3e4ab7-46d5-41b7-a9b8-f9c1b25ddc79",
+      "type": "mcq",
+      "body": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "کدام عدد، یک عدد اول است؟"
+              }
+            ]
+          }
+        ]
+      },
+      "marks": "4",
+      "options": [
+        "۱۲",
+        "۱۷",
+        "۲۱",
+        "۲۷"
+      ],
+      "answer": "۱۷",
+      "lines": 4,
+      "lined": true,
+      "pageBreak": false
+    },
+    {
+      "id": "1db40ba0-ea8c-4adf-ade1-71395188de8d",
+      "type": "blank",
+      "body": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "مجموع زاویه‌های داخلی یک مثلث برابر با "
+              },
+              {
+                "type": "blank",
+                "attrs": {
+                  "width": 90
+                }
+              },
+              {
+                "type": "text",
+                "text": " درجه است."
+              }
+            ]
+          }
+        ]
+      },
+      "marks": "6",
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "answer": "180",
+      "lines": 4,
+      "lined": true,
+      "pageBreak": false
+    },
+    {
+      "id": "89e0c4e8-6aaa-467a-b7e6-7ed5622b8c09",
+      "type": "written",
+      "body": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "مساحت مستطیلی به طول ۸ و عرض ۵ سانتی‌متر را حساب کنید. راه‌حل خود را بنویسید."
+              }
+            ]
+          }
+        ]
+      },
+      "marks": "10",
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "answer": "۴۰ سانتی‌متر مربع",
+      "lines": 5,
+      "lined": true,
+      "pageBreak": false
+    }
+  ]
+}

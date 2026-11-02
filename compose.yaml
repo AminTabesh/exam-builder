@@ -1,0 +1,49 @@
+services:
+  db:
+    image: mongo:8.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: exam
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?Set MONGO_PASSWORD}
+    volumes:
+      - mongo-database:/data/db
+    healthcheck:
+      test:
+        ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+  migrate:
+    build: .
+    command: ["node", "server/migrate.js"]
+    environment:
+      MONGODB_URI: mongodb://exam:${MONGO_PASSWORD}@db:27017/exam?authSource=admin
+    depends_on:
+      db:
+        condition: service_healthy
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      MONGODB_URI: mongodb://exam:${MONGO_PASSWORD}@db:27017/exam?authSource=admin
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET}
+      APP_URL: ${APP_URL:?Set HTTPS APP_URL}
+      ASSET_DIR: /app/data/assets
+      CHROMIUM_NO_SANDBOX: "true"
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM}
+    volumes:
+      - assets:/app/data/assets
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    init: true
+    shm_size: 1gb
+    restart: unless-stopped
+volumes:
+  mongo-database:
+  assets:

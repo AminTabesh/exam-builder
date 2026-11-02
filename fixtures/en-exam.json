@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "title": "Mathematics · Midterm",
+    "course": "Mathematics",
+    "institution": "Danesh School",
+    "instructor": "Maryam Ahmadi",
+    "date": "",
+    "calendar": "gregorian",
+    "startTime": "",
+    "duration": "60",
+    "year": "۱۴۰۵–۱۴۰۶",
+    "grade": "Grade 10",
+    "field": "",
+    "faculty": "",
+    "department": "",
+    "courseCode": "",
+    "semester": "",
+    "opening": "",
+    "instructions": "Answer all questions. Show your working.",
+    "closing": "Good luck.",
+    "logo": "",
+    "awardedScore": false
+  },
+  "layout": {
+    "language": "en",
+    "template": "school",
+    "fontSize": 12,
+    "target": "20"
+  },
+  "questions": [
+    {
+      "id": "de2a2e26-aadd-443a-bfd2-a49ac052883b",
+      "type": "mcq",
+      "body": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Which number is prime?"
+              }
+            ]
+          }
+        ]
+      },
+      "marks": "4",
+      "options": [
+        "12",
+        "17",
+        "21",
+        "27"
+      ],
+      "answer": "17",
+      "lines": 4,
+      "lined": true,
+      "pageBreak": false
+    },
+    {
+      "id": "afbe1fd7-dd20-4753-b45b-c8f749f79d5c",
+      "type": "blank",
+      "body": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "The angles of a triangle sum to "
+              },
+              {
+                "type": "blank",
+                "attrs": {
+                  "width": 90
+                }
+              },
+              {
+                "type": "text",
+                "text": " degrees."
+              }
+            ]
+          }
+        ]
+      },
+      "marks": "6",
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "answer": "180",
+      "lines": 4,
+      "lined": true,
+      "pageBreak": false
+    },
+    {
+      "id": "e6e9e339-0291-43e0-a9be-56f65949e789",
+      "type": "written",
+      "body": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Find the area of a rectangle with length 8 cm and width 5 cm. Show your working."
+              }
+            ]
+          }
+        ]
+      },
+      "marks": "10",
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "answer": "40 square centimetres",
+      "lines": 5,
+      "lined": true,
+      "pageBreak": false
+    }
+  ]
+}
