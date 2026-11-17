@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseDate, convertDate } from "../shared/date.js";
+import { parseDate, convertDate } from "@exam/shared/date.js";
 test("strict optional dates, leap days and calendar conversion", () => {
   assert.ok(parseDate("۱۳۹۹/۱۲/۳۰", "jalali"));
   assert.equal(parseDate("1400/12/30", "jalali"), null);

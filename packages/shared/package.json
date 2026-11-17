@@ -1,0 +1,14 @@
+{
+  "name": "@exam/shared",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./*"
+  },
+  "dependencies": {
+    "vue": "^3.5.0",
+    "zod": "^3.25.0",
+    "katex": "^0.16.22",
+    "moment-jalaali": "^0.9.6"
+  }
+}

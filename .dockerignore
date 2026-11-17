@@ -5,3 +5,6 @@ dist
 data
 test-results
 playwright-report
+
+**/node_modules
+**/dist

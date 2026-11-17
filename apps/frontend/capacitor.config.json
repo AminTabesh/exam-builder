@@ -1,0 +1,12 @@
+{
+  "appId": "ir.azmounbarg.app",
+  "appName": "آزمون‌برگ",
+  "webDir": "dist",
+  "server": { "androidScheme": "https", "cleartext": false },
+  "android": { "allowMixedContent": false, "webContentsDebuggingEnabled": false, "backgroundColor": "#f5f7fb" },
+  "plugins": {
+    "CapacitorHttp": { "enabled": true },
+    "SplashScreen": { "launchAutoHide": true, "backgroundColor": "#102a56", "showSpinner": false },
+    "Keyboard": { "resizeOnFullScreen": true }
+  }
+}

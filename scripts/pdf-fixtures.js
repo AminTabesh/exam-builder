@@ -2,8 +2,8 @@ import { writeFile, mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import sharp from "sharp";
-import { exampleExam, newQuestion, paragraph } from "../shared/exam.js";
-import { generatePdf } from "../server/pdf.js";
+import { exampleExam, newQuestion, paragraph } from "@exam/shared/exam.js";
+import { generatePdf } from "../apps/backend/src/modules/exams/pdf.js";
 await mkdir("test-results/pdfs", { recursive: true });
 const temp = await mkdtemp(path.join(tmpdir(), "exam-image-"));
 try {

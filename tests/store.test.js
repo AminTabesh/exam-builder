@@ -1,69 +1,76 @@
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { createPinia, setActivePinia } from "pinia";
-import { useExams } from "../src/stores/exams.js";
-import { exampleExam } from "../shared/exam.js";
-const originalFetch = globalThis.fetch;
+import { useExams } from "../apps/frontend/src/features/exams/store.js";
+import { exampleExam } from "@exam/shared/exam.js";
 let memory;
+const originalFetch = globalThis.fetch;
 beforeEach(() => {
   setActivePinia(createPinia());
   memory = new Map();
   Object.defineProperty(globalThis, "localStorage", {
     configurable: true,
     value: {
-      getItem: (key) => memory.get(key) || null,
-      setItem: (key, value) => memory.set(key, value),
-      removeItem: (key) => memory.delete(key),
+      getItem: (k) => memory.get(k) || null,
+      setItem: (k, v) => memory.set(k, v),
+      removeItem: (k) => memory.delete(k),
     },
   });
 });
-afterEach(() => {
-  globalThis.fetch = originalFetch;
-});
-test("guest saves persist exact content and reject another-tab changes", async () => {
+afterEach(() => (globalThis.fetch = originalFetch));
+test("unauthenticated stores cannot create, read, save or delete exams", async () => {
   const store = useExams();
-  const row = await store.create(true);
-  const document = JSON.parse(JSON.stringify(row.document));
-  document.meta.title = "تغییر محلی";
-  const saved = await store.save(row.id, document, 1);
-  assert.equal(saved.revision, 2);
-  assert.equal((await store.get(row.id)).document.meta.title, "تغییر محلی");
-  await assert.rejects(store.save(row.id, document, 1), { status: 409 });
-  assert.equal((await store.get(row.id)).revision, 2);
+  for (const fn of [
+    () => store.create(),
+    () => store.get("id"),
+    () => store.save("id", exampleExam(), 1),
+    () => store.remove("id"),
+  ])
+    await assert.rejects(fn(), { status: 401 });
 });
-test("failed account save leaves last saved revision intact and can be retried", async () => {
+test("failed saves preserve revision and retry submits the original revision", async () => {
   const store = useExams();
   store.user = { id: "teacher" };
-  const document = exampleExam();
-  store.items = [
-    { id: "exam", revision: 1, document: structuredClone(document) },
-  ];
-  document.meta.title = "پیش‌نویس بازیابی";
+  store.items = [{ id: "exam", revision: 1, document: exampleExam() }];
   let attempts = 0;
   globalThis.fetch = async (url, options) => {
     attempts++;
-    if (attempts === 1) throw new TypeError("Network disconnected");
+    if (attempts === 1) throw new TypeError("offline");
     const body = JSON.parse(options.body);
     assert.equal(body.revision, 1);
-    return new Response(
-      JSON.stringify({ id: "exam", revision: 2, document: body.document }),
-      { headers: { "Content-Type": "application/json" } },
-    );
+    return Response.json({ id: "exam", revision: 2, document: body.document });
   };
-  await assert.rejects(store.save("exam", document, 1), /Network disconnected/);
+  await assert.rejects(store.save("exam", exampleExam(), 1));
   assert.equal(store.items[0].revision, 1);
-  assert.equal(document.meta.title, "پیش‌نویس بازیابی");
-  await store.save("exam", document, 1);
+  await store.save("exam", exampleExam(), 1);
   assert.equal(store.items[0].revision, 2);
-  assert.equal(store.items[0].document.meta.title, "پیش‌نویس بازیابی");
 });
-test("storage exhaustion does not report a successful guest save", async () => {
-  const store = useExams();
-  const row = await store.create(true);
-  localStorage.setItem = () => {
-    throw new Error("QuotaExceededError");
+test("legacy import is explicit and only successful imports remove local originals", async () => {
+  const store = useExams(),
+    rows = [
+      { id: "one", document: exampleExam() },
+      { id: "two", document: exampleExam() },
+    ];
+  localStorage.setItem("azmoon-demo", JSON.stringify(rows));
+  store.user = { id: "teacher" };
+  let creations = 0;
+  globalThis.fetch = async (url, options) => {
+    if (url === "/api/exams") {
+      creations++;
+      return creations === 1
+        ? Response.json({ id: "new", document: exampleExam(), revision: 1 })
+        : Response.json(
+            { error: "quota", code: "EXAM_QUOTA" },
+            { status: 402 },
+          );
+    }
+    return Response.json({ plan: { id: "free" }, remaining: 0 });
   };
-  await assert.rejects(store.save(row.id, exampleExam(), 1), /ذخیره نشد/);
-  assert.equal(store.storageError, true);
-  assert.equal(JSON.parse(memory.get("azmoon-demo"))[0].revision, 1);
+  assert.equal(JSON.parse(localStorage.getItem("azmoon-demo")).length, 2);
+  await store.adoptGuestExams();
+  assert.deepEqual(
+    JSON.parse(localStorage.getItem("azmoon-demo")).map((r) => r.id),
+    ["two"],
+  );
+  assert.equal(store.legacyCount, 1);
 });

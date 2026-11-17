@@ -1,0 +1,27 @@
+{
+  "name": "@exam/backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "db:migrate": "node src/migrate.js"
+  },
+  "dependencies": {
+    "@exam/shared": "*",
+    "@vue/server-renderer": "^3.5.0",
+    "connect-mongo": "^6.0.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "fontkit": "^2.0.4",
+    "helmet": "^8.1.0",
+    "mongodb": "^7.8.0",
+    "multer": "^2.0.0",
+    "nodemailer": "^7.0.0",
+    "playwright": "^1.56.0",
+    "sharp": "^0.34.0",
+    "vue": "^3.5.0"
+  }
+}

@@ -1,0 +1,20 @@
+openapi: 3.0.3
+info:
+  title: Bazaar subscription verification subset
+  version: 1.0.0
+servers:
+  - url: https://pardakht.cafebazaar.ir
+paths:
+  /devapi/v2/api/applications/{package}/subscriptions/{product}/purchases/{token}:
+    get:
+      operationId: subscription
+      parameters:
+        - {name: package, in: path, required: true, schema: {type: string}}
+        - {name: product, in: path, required: true, schema: {type: string}}
+        - {name: token, in: path, required: true, schema: {type: string}}
+      responses:
+        '503':
+          description: Provider unavailable
+          content:
+            application/json:
+              example: {error: temporarily_unavailable}

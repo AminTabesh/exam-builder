@@ -1,0 +1,6 @@
+**/node_modules/
+**/dist/
+apps/frontend/public/fonts/
+test-results/
+playwright-report/
+package-lock.json

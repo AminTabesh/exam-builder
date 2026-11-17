@@ -1,0 +1,14 @@
+version: 1
+id: 81a8a4f8-3e55-4fa6-a2fe-bf8ecb56f416
+name: bazaar
+slug: bazaar
+protocol: http
+port: 4500
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true
+generatedFrom:
+  type: spec
+  mode: static
+  path: ../../contracts/bazaar.openapi.yaml

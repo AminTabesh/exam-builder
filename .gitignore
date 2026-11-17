@@ -7,3 +7,9 @@ playwright-report/
 *.log
 .DS_Store
 backups/
+
+*.jks
+*.keystore
+*.p12
+android-release/
+postman/.dependencies/

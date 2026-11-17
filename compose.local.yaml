@@ -1,0 +1,31 @@
+services:
+  db:
+    ports:
+      - "127.0.0.1:27018:27017"
+  backend:
+    build:
+      target: development
+    command: ["node", "--watch", "--watch-path=apps/backend", "--watch-path=packages/shared", "--watch-path=apps/frontend/public", "apps/backend/src/index.js"]
+    environment:
+      NODE_ENV: development
+      OTP_DELIVERY: console
+      APP_URL: http://localhost:5173
+    volumes:
+      - ./apps/backend:/app/apps/backend:ro
+      - ./packages/shared:/app/packages/shared:ro
+      - ./apps/frontend/public:/app/apps/frontend/public:ro
+  frontend:
+    build:
+      target: frontend-development
+    command: ["npm", "run", "dev", "--workspace", "@exam/frontend", "--", "--strictPort"]
+    environment:
+      NODE_ENV: development
+      DOCKER_WATCH_POLLING: "true"
+    volumes:
+      - ./apps/frontend/src:/app/apps/frontend/src:ro
+      - ./apps/frontend/public:/app/apps/frontend/public:ro
+      - ./apps/frontend/index.html:/app/apps/frontend/index.html:ro
+      - ./apps/frontend/vite.config.js:/app/apps/frontend/vite.config.js:ro
+      - ./apps/frontend/postcss.config.js:/app/apps/frontend/postcss.config.js:ro
+      - ./apps/frontend/tailwind.config.js:/app/apps/frontend/tailwind.config.js:ro
+      - ./packages/shared:/app/packages/shared:ro

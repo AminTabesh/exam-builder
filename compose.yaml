@@ -1,41 +1,48 @@
 services:
   db:
     image: mongo:8.0
+    entrypoint: ["bash", "-c", "openssl rand -base64 756 > /tmp/mongo-key; chmod 400 /tmp/mongo-key; chown mongodb:mongodb /tmp/mongo-key; exec docker-entrypoint.sh mongod --replSet rs0 --bind_ip_all --keyFile /tmp/mongo-key"]
     environment:
       MONGO_INITDB_ROOT_USERNAME: exam
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?Set MONGO_PASSWORD}
     volumes:
       - mongo-database:/data/db
     healthcheck:
-      test:
-        ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      test: ["CMD-SHELL", "mongosh --quiet -u exam -p \"$$MONGO_INITDB_ROOT_PASSWORD\" --authenticationDatabase admin --eval \"try { rs.status(); quit(db.hello().isWritablePrimary ? 0 : 1) } catch(e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'db:27017'}]}); quit(1) }\""]
       interval: 5s
-      retries: 10
+      retries: 30
     restart: unless-stopped
   migrate:
-    build: .
-    command: ["node", "server/migrate.js"]
+    build:
+      context: .
+      target: backend
+    command: ["node", "apps/backend/src/migrate.js"]
     environment:
-      MONGODB_URI: mongodb://exam:${MONGO_PASSWORD}@db:27017/exam?authSource=admin
+      MONGODB_URI: mongodb://exam:${MONGO_PASSWORD}@db:27017/exam?authSource=admin&replicaSet=rs0
     depends_on:
       db:
         condition: service_healthy
-  app:
-    build: .
-    ports:
-      - "127.0.0.1:3001:3001"
+  backend:
+    build:
+      context: .
+      target: backend
     environment:
-      MONGODB_URI: mongodb://exam:${MONGO_PASSWORD}@db:27017/exam?authSource=admin
+      MONGODB_URI: mongodb://exam:${MONGO_PASSWORD}@db:27017/exam?authSource=admin&replicaSet=rs0
       SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET}
       APP_URL: ${APP_URL:?Set HTTPS APP_URL}
+      OTP_SECRET: ${OTP_SECRET:?Set OTP_SECRET}
+      OTP_DELIVERY: providers
       ASSET_DIR: /app/data/assets
       CHROMIUM_NO_SANDBOX: "true"
-      SMTP_HOST: ${SMTP_HOST}
+      SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_SECURE: ${SMTP_SECURE:-false}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
-      MAIL_FROM: ${MAIL_FROM}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-openai/gpt-oss-20b}
+      AI_DAILY_CALL_LIMIT: ${AI_DAILY_CALL_LIMIT:-100}
     volumes:
       - assets:/app/data/assets
     depends_on:
@@ -43,6 +50,18 @@ services:
         condition: service_completed_successfully
     init: true
     shm_size: 1gb
+    restart: unless-stopped
+  frontend:
+    build:
+      context: .
+      target: frontend
+    environment:
+      API_INTERNAL_URL: http://backend:3001
+      FRONTEND_PORT: 5173
+    ports:
+      - "127.0.0.1:5173:5173"
+    depends_on:
+      - backend
     restart: unless-stopped
 volumes:
   mongo-database:
